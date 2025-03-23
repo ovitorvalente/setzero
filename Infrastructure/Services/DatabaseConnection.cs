@@ -20,10 +20,12 @@ namespace SetZero.Infrastructure.Services
                 catch (SqlException sqle)
                 {
                     MessageBox.Show($"Erro ao conectar ao banco de dados: {sqle.Message}", "Erro SQL", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Application.Current.Shutdown();
                 }
                 catch (Exception e)
                 {
                     MessageBox.Show($"Erro inesperado: {e.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Application.Current.Shutdown();
                 }
             }
         }

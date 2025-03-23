@@ -16,7 +16,7 @@
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="4">
+        <Grid Grid.Row="0" Margin="8">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="30"/>
@@ -35,30 +35,31 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Height="25" Content="Filial:" VerticalAlignment="Center" ToolTip="Campo para a Filial"/>
-                    <TextBox Grid.Column="1" Height="25" Text="1" VerticalAlignment="Center" ToolTip="Digite o numero da sua Filial desejada"/>
+                    <TextBox Grid.Column="1" Height="25" Name="inputFilial" Text="1" VerticalAlignment="Center" ToolTip="Digite o numero da sua Filial desejada"/>
                 </Grid>
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="70"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Height="25" Content="Sequencia:" VerticalAlignment="Center" ToolTip="Campo para a Sequencia"/>
-                    <TextBox Grid.Column="1" Height="25" VerticalAlignment="Center" ToolTip="Digite o numero da sequencia desejada"/>
+                    <Label Grid.Column="0" Height="25"  Content="Sequencia:" VerticalAlignment="Center" ToolTip="Campo para a Sequencia"/>
+                    <TextBox Grid.Column="1" Height="25" Name="inputSequencia" VerticalAlignment="Center" ToolTip="Digite o numero da sequencia desejada"/>
                 </Grid>
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="70"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Height="25" Content="N Item:" VerticalAlignment="Center" ToolTip="Campo para o numero do Item"/>
-                    <TextBox Grid.Column="1" Height="25" VerticalAlignment="Center" ToolTip="Digite o numero do item que deseja zerar"/>
+                    <Label Grid.Column="0" Height="25"  Content="N Item:" VerticalAlignment="Center" ToolTip="Campo para o numero do Item"/>
+                    <TextBox Grid.Column="1" Height="25" Name="inputNItem" VerticalAlignment="Center" ToolTip="Digite o numero do item que deseja zerar"/>
                 </Grid>
             </Grid>
 
-            <Button Grid.Row="1" Content="Zerar" Background="#CC0078D7" BorderBrush="White" Foreground="White" FontWeight="Bold" Cursor="Hand" Height="30" ToolTip="Iniciar processo"/>
+            <Button Click="ResetMovimentValue" Grid.Row="1" Content="Zerar" Background="#CC0078D7" BorderBrush="White" Foreground="White" FontWeight="Bold" Cursor="Hand" Height="30" ToolTip="Iniciar processo"/>
         </Grid>
 
-        <StatusBar Grid.Row="1" Background="#330078D7" Foreground="White" >
+        <StatusBar Grid.Row="1" Padding="6, 0, 6, 0" Background="#CC0078D7" Foreground="White" >
+            <TextBlock Name="statusText" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Aguardando às informações..."/>
         </StatusBar>
     </Grid>
 </Window>
