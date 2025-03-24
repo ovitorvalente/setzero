@@ -21,7 +21,7 @@ namespace SetZero.Infrastructure.Services
             string json = File.ReadAllText(filePath);
             DatabaseConfig config = JsonConvert.DeserializeObject<DatabaseConfig>(json);
 
-            if(config == null)
+            if (config == null)
             {
                 throw new InvalidDataException("Erro ao ler as configurações do arquivo.");
                 Application.Current.Shutdown();

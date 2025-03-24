@@ -1,12 +1,14 @@
 ﻿using System.IO;
 using System.Windows;
 using SetZero.Infrastructure.Services;
+using SetZero.Models.Entities;
 
 namespace SetZero;
 
 public partial class MainWindow : Window
 {
     private readonly string _folderPath = AppDomain.CurrentDomain.BaseDirectory;
+    private DatabaseConfig _config;
     public MainWindow()
     {
         InitializeComponent();
@@ -17,8 +19,17 @@ public partial class MainWindow : Window
     {
         try
         {
-            var config = FileReader.ReadConfig(folderPath);
-            DatabaseConnection.ConnectToDatabase(config);
+            _config = FileReader.ReadConfig(folderPath);
+
+            if (_config == null)
+            {
+                MessageBox.Show("Falha ao ler o arquivo de configuração.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                Application.Current.Shutdown();
+                return;
+            }
+
+            var connection = DatabaseConnection.ConnectToDatabase(_config);
+            MessageBox.Show("Conexão bem-sucedida com o banco de dados!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (FileNotFoundException e)
         {
@@ -32,12 +43,32 @@ public partial class MainWindow : Window
         }
     }
 
-    private void ResetMovimentValue(object sender, RoutedEventArgs e)
-    {
-        string filial = inputFilial.Text;
-        string sequencia = inputSequencia.Text;
-        string nItem = inputNItem.Text;
 
-        statusText.Text = "Procedimento realizado com sucesso!";
+    private async void ResetMovimentValue(object sender, RoutedEventArgs e)
+    {
+
+        var data = new MovimentData
+        {
+            Filial__Codigo = int.Parse(inputFilial.Text),
+            Sequencia = int.Parse(inputSequencia.Text),
+            Linha = int.Parse(inputNItem.Text),
+        };
+
+        try
+        {
+            var service = new DatabaseService();
+            await DatabaseService.UpdateMoviments(data, _config);
+            statusText.Text = "Aguarde um momento...";
+            statusText.Text = "Procedimento realizado com sucesso!";
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Erro ao realizar operação: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    protected override void OnClosed(EventArgs e)
+    {
+        base.OnClosed(e);
     }
 }
