@@ -1,51 +1,26 @@
-﻿using System.IO;
-using System.Windows;
-using SetZero.Infrastructure.Services;
-using SetZero.Models.Entities;
+﻿using System.Windows;
+using System.Windows.Media;
+using SetZero.Application.Services;
+using SetZero.Infrastructure.Data;
+using SetZero.src.Domain.Entities;
+using SetZero.src.Infrastructure.Services;
 
 namespace SetZero;
 
-public partial class MainWindow : Window
+public partial class MainWindow
 {
-    private readonly string _folderPath = AppDomain.CurrentDomain.BaseDirectory;
-    private DatabaseConfig _config;
     public MainWindow()
     {
         InitializeComponent();
-        HandleConnectionDatabase(_folderPath);
     }
-
-    private void HandleConnectionDatabase(string folderPath)
-    {
-        try
-        {
-            _config = FileReader.ReadConfig(folderPath);
-
-            if (_config == null)
-            {
-                MessageBox.Show("Falha ao ler o arquivo de configuração.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                Application.Current.Shutdown();
-                return;
-            }
-
-            var connection = DatabaseConnection.ConnectToDatabase(_config);
-            MessageBox.Show("Conexão bem-sucedida com o banco de dados!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-        catch (FileNotFoundException e)
-        {
-            MessageBox.Show(e.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-            Application.Current.Shutdown();
-        }
-        catch (Exception e)
-        {
-            MessageBox.Show($"Erro inesperado: {e.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-            Application.Current.Shutdown();
-        }
-    }
-
 
     private async void ResetMovimentValue(object sender, RoutedEventArgs e)
     {
+        if (string.IsNullOrEmpty(inputFilial.Text) || string.IsNullOrEmpty(inputSequencia.Text) || string.IsNullOrEmpty(inputNItem.Text))
+        {
+            ShowStatus("Preencha todos os campos!", Brushes.DarkRed);
+            return;
+        }
 
         var data = new MovimentData
         {
@@ -56,19 +31,43 @@ public partial class MainWindow : Window
 
         try
         {
-            var service = new DatabaseService();
-            await DatabaseService.UpdateMoviments(data, _config);
-            statusText.Text = "Aguarde um momento...";
-            statusText.Text = "Procedimento realizado com sucesso!";
+            ShowStatus("Aguarde um momento...", Brushes.DarkOrange);
+
+            string folderPath = AppDomain.CurrentDomain.BaseDirectory;
+            var databaseConfig = FileReader.ReadConfig(folderPath);
+
+            var databaseConnection = new DatabaseConnection();
+            var databaseService = new DatabaseService();
+
+            using (var connection = databaseConnection.ConnectToDatabase(databaseConfig))
+            {
+                await databaseService.UpdateMoviments(data, connection);
+            }
+
+            ShowStatus("Procedimento realizado com sucesso!", Brushes.DarkGreen);
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Erro ao realizar operação: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
-    protected override void OnClosed(EventArgs e)
+
+
+    private bool IsTextNumeric(string text)
     {
-        base.OnClosed(e);
+        return int.TryParse(text, out _);
+    }
+    private async void ShowStatus(string message, SolidColorBrush color)
+    {
+        statusBar.Background = color;
+        statusText.Text = message;
+        await Task.Delay(3000);
+        statusBar.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CC0078D7"));
+        statusText.Text = "Feito por Vitor Valente";
+    }
+    private void OnPreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+    {
+        e.Handled = !IsTextNumeric(e.Text);
     }
 }

@@ -1,8 +1,6 @@
-﻿using System.Windows;
+﻿namespace SetZero;
 
-namespace SetZero;
-
-public partial class App : Application
+public partial class App
 {
 }
 

@@ -1,4 +1,4 @@
-﻿namespace SetZero.Models.Entities
+﻿namespace SetZero.src.Domain.Entities
 {
     public class DatabaseConfig
     {
