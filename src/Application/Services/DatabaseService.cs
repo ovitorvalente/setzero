@@ -23,12 +23,17 @@ namespace SetZero.Application.Services
             try
             {
                 var movementIde = await connection.QuerySingleOrDefaultAsync<Guid>(selectMovementIdQuery, queryParameters);
+                var itemLine = await connection.QuerySingleOrDefaultAsync<int?>(CheckMovementProductLine(), new { movementIde, itemLineParam = data.Linha });
+                var itemValue = await connection.QuerySingleOrDefaultAsync<double>(selectItemValueQuery, new { movementIde, itemLineParam = data.Linha });
+
                 if (movementIde == Guid.Empty)
                     throw new Exception("Movimento não encontrado.");
 
-                var itemValue = await connection.QuerySingleOrDefaultAsync<double>(selectItemValueQuery, new { movementIde, itemLineParam = data.Linha });
+                if (itemLine ==  null)
+                    throw new Exception("Linha não encontrada");
+
                 if (itemValue == 0)
-                    throw new Exception("Valor do item não encontrado.");
+                    throw new Exception("O valor do item já foi zerado.");
 
                 await connection.ExecuteAsync(updateMovementProductQuery, new { movementIde, itemLineParam = data.Linha });
                 await connection.ExecuteAsync(updateMovementQuery, new { movementIde, itemValue });
@@ -42,13 +47,16 @@ namespace SetZero.Application.Services
         private static string SelectMovementIdeQuery() =>
             "SELECT Ide FROM Movimento WHERE Sequencia = @sequenceParam AND Filial__Codigo = @filialCodeParam;";
 
+        private static string CheckMovementProductLine() =>
+            "SELECT Linha FROM Movimento_Produto WHERE Movimento__Ide = @movementIde AND Linha = @itemLineParam;";
+
         private static string SelectMovementProductValueQuery() =>
-            "SELECT Valor_Final FROM Movimento_Produto WHERE Movimento__Ide = @movementId AND Linha = @itemLineParam;";
+            "SELECT Valor_Final FROM Movimento_Produto WHERE Movimento__Ide = @movementIde AND Linha = @itemLineParam;";
 
         private static string UpdateMovementProductQuery() =>
-            "UPDATE Movimento_Produto SET Valor_Final = 0 WHERE Movimento__Ide = @movementId AND Linha = @itemLineParam;";
+            "UPDATE Movimento_Produto SET Valor_Final = 0 WHERE Movimento__Ide = @movementIde AND Linha = @itemLineParam;";
 
         private static string UpdateMovementQuery() =>
-            "UPDATE Movimento SET Total_Final = Total_Final - @itemValue WHERE Ide = @movementId;";
+            "UPDATE Movimento SET Total_Final = Total_Final - @itemValue WHERE Ide = @movementIde;";
     }
 }
