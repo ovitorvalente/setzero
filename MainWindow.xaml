@@ -10,7 +10,7 @@
         ResizeMode="CanMinimize" 
         Title="Definir para Zero"
         Loaded="InputSequenceFocus"
-        WindowStartupLocation="CenterScreen" Icon="/Logo_icone_Noom-removebg-preview.png">
+        WindowStartupLocation="CenterScreen" Icon="/noom-icon.png">
 
     <Grid>
         <Grid.RowDefinitions>

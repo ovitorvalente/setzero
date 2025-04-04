@@ -7,6 +7,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
 		<RepositoryUrl>https://github.com/ovitorvalente/setzero</RepositoryUrl>
+		<PackageIcon>noom-icon.png</PackageIcon>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -24,7 +25,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Logo_icone_Noom-removebg-preview.png" />
+	  <None Remove="noom-icon.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\..\..\Users\vitor\Downloads\noom-icon.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -35,7 +43,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Resource Include="Logo_icone_Noom-removebg-preview.png" />
+	  <Resource Include="noom-icon.png" />
 	</ItemGroup>
 
 	<ItemGroup>
