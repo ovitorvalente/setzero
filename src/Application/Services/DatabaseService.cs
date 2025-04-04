@@ -2,7 +2,7 @@
 using Microsoft.Data.SqlClient;
 using SetZero.src.Domain.Entities;
 
-namespace SetZero.Application.Services
+namespace SetZero.src.Application.Services
 {
     public class DatabaseService
     {

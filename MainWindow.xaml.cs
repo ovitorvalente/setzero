@@ -1,9 +1,11 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Reflection;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Navigation;
-using SetZero.Application.Services;
-using SetZero.Infrastructure.Data;
+using SetZero.src.Application.Services;
+using SetZero.src.Infrastructure.Data;
 using SetZero.src.Domain.Entities;
 using SetZero.src.Infrastructure.Services;
 
@@ -40,14 +42,12 @@ public partial class MainWindow
 
         try
         {
-            string folderPath = AppDomain.CurrentDomain.BaseDirectory;
-            var databaseConfig = FileReader.ReadConfig(folderPath);
-
+            var databaseConfig = FileReader.ReadConfig();
             var databaseConnection = new DatabaseConnection();
-            var databaseService = new DatabaseService();
 
             using (var connection = databaseConnection.ConnectToDatabase(databaseConfig))
             {
+                var databaseService = new DatabaseService();
                 await databaseService.UpdateMovements(data, connection);
             }
 
@@ -63,7 +63,7 @@ public partial class MainWindow
         inputSequencia.Focus();
     }
 
-    private bool IsTextNumeric(string text)
+    private static bool IsTextNumeric(string text)
     {
         return int.TryParse(text, out _);
     }
@@ -79,7 +79,7 @@ public partial class MainWindow
         await Task.Delay(3000);
 
         statusBar.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000"));
-        statusBar.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFF1EDED"));
+        statusBar.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#007acc"));
         statusText.Inlines.Clear();
         statusText.Inlines.Add("© 2025 Vitor Valente. Todos os direitos reservados");
     }
@@ -99,7 +99,7 @@ public partial class MainWindow
         e.Handled = true;
     }
 
-    private void inputSequenceFocus(object sender, RoutedEventArgs e)
+    private void InputSequenceFocus(object sender, RoutedEventArgs e)
     {
         inputSequencia.Focus();
     }

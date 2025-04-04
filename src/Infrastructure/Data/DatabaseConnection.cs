@@ -2,7 +2,7 @@
 using SetZero.Domain.Interfaces;
 using SetZero.src.Domain.Entities;
 
-namespace SetZero.Infrastructure.Data
+namespace SetZero.src.Infrastructure.Data
 {
     public class DatabaseConnection : IDatabaseConnection
     {

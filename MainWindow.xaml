@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SetZero"
         mc:Ignorable="d"
-        Height="250" 
-        Width="320" 
+        Height="200" 
+        Width="400" 
         ResizeMode="CanMinimize" 
         Title="Definir para Zero"
-        Loaded="inputSequenceFocus"
-        WindowStartupLocation="CenterScreen">
+        Loaded="InputSequenceFocus"
+        WindowStartupLocation="CenterScreen" Icon="/Logo_icone_Noom-removebg-preview.png">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -28,7 +28,6 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="35"/>
                     <RowDefinition Height="35"/>
-                    <RowDefinition Height="35"/>
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0">
@@ -41,28 +40,35 @@
                 </Grid>
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="250"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Height="25"  Content="Sequencia:" VerticalAlignment="Center" ToolTip="Campo para a Sequencia"/>
-                    <TextBox Grid.Column="1" PreviewTextInput="OnPreviewTextInput" Height="25" Name="inputSequencia" VerticalAlignment="Center" ToolTip="Digite o numero da sequencia desejada" VerticalContentAlignment="Center"/>
-                </Grid>
-                <Grid Grid.Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="70"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Height="25"  Content="Linha:" VerticalAlignment="Center" ToolTip="Campo para o numero do Item"/>
-                    <TextBox Grid.Column="1" Height="25" PreviewTextInput="OnPreviewTextInput" Name="inputLinha" VerticalAlignment="Center" ToolTip="Digite o numero do item que deseja zerar" VerticalContentAlignment="Center"/>
+                    
+                    <Grid Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Height="25"  Content="Sequencia:" VerticalAlignment="Center" ToolTip="Campo para a Sequencia"/>
+                        <TextBox Grid.Column="1" PreviewTextInput="OnPreviewTextInput" Height="25" Name="inputSequencia" VerticalAlignment="Center" ToolTip="Digite o numero da sequencia desejada" VerticalContentAlignment="Center"/>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Height="25" HorizontalAlignment="Right" Content="Linha:" VerticalAlignment="Center" ToolTip="Campo para o numero do Item"/>
+                        <TextBox Grid.Column="1" Height="25" PreviewTextInput="OnPreviewTextInput" Name="inputLinha" VerticalAlignment="Center" ToolTip="Digite o numero do item que deseja zerar" VerticalContentAlignment="Center"/>
+                    </Grid>
                 </Grid>
             </Grid>
 
-            <Button Click="ResetMovimentValue" Grid.Row="1" Content="Zerar [F2]" Height="35" ToolTip="Iniciar processo" BorderBrush="{x:Null}" Foreground="Black" Background="#FFF1EDED"/>
+            <Button Click="ResetMovimentValue" Grid.Row="1" Content="Zerar [F2]" Height="35" ToolTip="Iniciar processo" />
         </Grid>
 
-        <StatusBar Name="statusBar" Grid.Row="1" Padding="6, 0, 6, 0" >
+        <StatusBar Name="statusBar" Grid.Row="1" Padding="6, 0, 6, 0" Background= "#007acc">
             <TextBlock ToolTip="Clique para saber mais..." VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Hyperlink TextDecorations="None" Name="statusText" NavigateUri="https://github.com/ovitorvalente"  RequestNavigate="Hyperlink_RequestNavigate" Foreground="Black">
+                <Hyperlink TextDecorations="None" Name="statusText" NavigateUri="https://github.com/ovitorvalente"  RequestNavigate="Hyperlink_RequestNavigate" Foreground="#FFF">
                     © 2025 Vitor Valente. Todos os direitos reservados
                 </Hyperlink>
             </TextBlock>
